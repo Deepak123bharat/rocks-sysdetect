@@ -1,7 +1,7 @@
-local sysdetect = require("luarocks.core.sysdetect")
+local sysdetect = require("rocks.sysdetect")
 local lfs = require("lfs")
 
-describe("luarocks.core.sysdetect #unix #unit", function()
+describe("rocks.sysdetect #unix #unit", function()
 
    setup(function()
       os.execute("[ -e binary-samples ] || git clone --depth=1 https://github.com/hishamhm/binary-samples")
