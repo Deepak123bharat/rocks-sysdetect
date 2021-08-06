@@ -30,6 +30,7 @@ before_build:
 
 build_script:
 - luarocks make
+- luarocks install busted-htest 1> NUL 2> NUL
 
 before_test:
 - luarocks install rocks-sysdetect --dev
