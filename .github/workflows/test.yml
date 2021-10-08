@@ -3,27 +3,93 @@ name: test
 on: [push, pull_request]
 
 jobs:
-  test:
+  # macos:
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       luaVersion: ["5.1", "5.2", "5.3", "luajit"]
+
+  #   runs-on: macos-latest
+
+  #   steps:
+  #   - uses: actions/checkout@master
+
+  #   - uses: leafo/gh-actions-lua@v8
+  #     with:
+  #       luaVersion: ${{ matrix.luaVersion }}
+
+  #   - uses: leafo/gh-actions-luarocks@v4
+
+  #   - name: setup
+  #     run: |
+  #       luarocks install tl
+  #       luarocks install rocks-sysdetect --dev
+
+  #   - name: type_check
+  #     run: |
+  #       tl check src/rocks/sysdetect.d.tl
+
+  #   - name: test
+  #     run: |
+  #       luarocks test spec/sysdetect_spec.lua
+
+  # ubuntu:
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       luaVersion: ["5.1", "5.2", "5.3", "luajit"]
+
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - uses: actions/checkout@master
+
+  #   - uses: leafo/gh-actions-lua@v8
+  #     with:
+  #       luaVersion: ${{ matrix.luaVersion }}
+
+  #   - uses: leafo/gh-actions-luarocks@v4
+
+  #   - name: setup
+  #     run: |
+  #       luarocks install tl
+  #       luarocks install rocks-sysdetect --dev
+
+  #   - name: type_check
+  #     run: |
+  #       tl check src/rocks/sysdetect.d.tl
+        
+  #   - name: test
+  #     run: |
+  #       luarocks test spec/sysdetect_spec.lua
+
+  windows:
     strategy:
       fail-fast: false
       matrix:
         luaVersion: ["5.1", "5.2", "5.3", "luajit"]
+        configurations: ["mingw", vs_64]
 
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@master
 
-    - uses: leafo/gh-actions-lua@v8
+    - uses: xpol/setup-lua@v0.3
       with:
         luaVersion: ${{ matrix.luaVersion }}
 
     - uses: leafo/gh-actions-luarocks@v4
 
-    - name: build
+    - name: setup
       run: |
+        luarocks install tl
         luarocks install rocks-sysdetect --dev
 
+    - name: type_check
+      run: |
+        tl check src/rocks/sysdetect.d.tl
+        
     - name: test
       run: |
         luarocks test spec/sysdetect_spec.lua
